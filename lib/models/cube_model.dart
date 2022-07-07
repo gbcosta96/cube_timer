@@ -85,12 +85,14 @@ class CubeModel {
   void _makeMove(MovesModel move) {
     List<List<Map<CubeFaces,List<int>>>> rotations = [];
     for(int i = 0; i < sectors.length; i++) {
+      // rotate face stickers
       rotations.add([{move.face: sectors[i][FaceSector.north]!.getRange(i, size - i).toList()},
                      {move.face: sectors[i][FaceSector.east]!.getRange(i, size - i).toList()},
                      {move.face: sectors[i][FaceSector.south]!.getRange(i, size - i).toList()},
                      {move.face: sectors[i][FaceSector.west]!.getRange(i, size - i).toList()}]);
       if(i < move.wide) {
         switch(move.face) {
+          // rotate adjacent stickers
           case CubeFaces.up:
             rotations.add([{CubeFaces.front: sectors[i][FaceSector.north]!}, {CubeFaces.left: sectors[i][FaceSector.north]!},
                           {CubeFaces.back: sectors[i][FaceSector.north]!}, {CubeFaces.right: sectors[i][FaceSector.north]!}]);
@@ -125,7 +127,6 @@ class CubeModel {
             break;
         }
       }
-      
     }
     
     for(var rotation in rotations) {
