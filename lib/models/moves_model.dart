@@ -34,6 +34,6 @@ class MovesModel {
     if(str.contains("w")) {
       moveModel.wide = int.tryParse(str[0]) ?? 2;
     }
-    return null;
+    return moveModel;
   }
 }

@@ -1,4 +1,6 @@
 
+import 'dart:math';
+
 import 'package:cube_timer/models/moves_model.dart';
 
 enum CubeFaces{up, left, front, right, back, down}
@@ -144,17 +146,17 @@ class CubeModel {
   }
 
 
-  /*static const List<List<String>> _movesByGroup = [
+  static const List<List<String>> _movesByGroup = [
     ["F", "F'", "F2"],
     ["B", "B'", "B2"],
     ["R", "R'", "R2"],
     ["L", "L'", "L2"],
     ["D", "D'", "D2"],
     ["U", "U'", "U2"],
-  ];*/
+  ];
 
   String generateScramble() {
-    /*List<int> _groups = [Random().nextInt(6)];
+    List<int> _groups = [Random().nextInt(6)];
     String scramble = "";
     int scrambleSize = 15 + Random().nextInt(6);
     while (_groups.length < scrambleSize) {
@@ -166,8 +168,8 @@ class CubeModel {
           scramble += "${_movesByGroup[newNumber][Random().nextInt(3)]} ";
         }
       }
-    }*/
-    return "U2 L 3Fw2 Dw' 3Rw Bw' Dw 3Rw Fw2 B2 3Uw F U' 3Rw' L2 Lw' 3Uw Bw F2 3Bw2 L 3Rw2 3Uw' L2 R' Fw2 B D2 Fw L 3Bw' Rw Dw' Rw' Bw' Fw2 L2 D Dw' R' B2 Lw 3Fw2 Dw Bw 3Bw Uw2 D2 3Dw Dw' R' 3Dw' Lw Fw R2 3Bw F' 3Dw2 3Lw' F2 3Fw R B2 3Fw2 Rw' 3Uw2 D2 3Bw2 U' Lw' B 3Rw 3Dw2 3Uw F' 3Bw 3Lw' B2 Rw2 3Lw2 3Rw 3Fw' 3Bw' 3Lw' B2 Lw R' 3Rw' Uw2 Rw 3Dw' L2 3Bw Bw2 3Fw F 3Uw B' Uw' 3Rw'";
+    }
+    return scramble;
   }
 
 }
