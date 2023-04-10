@@ -14,10 +14,11 @@ enum FaceSector{north, east, south, west}
 
 class CubeModel {
   final int size;
+  final bool bld;
   List<Map<FaceSector, List<int>>> sectors = [];
   List<List<CubeFaces>> stickers = [];
 
-  CubeModel(this.size) {
+  CubeModel(this.size, {this.bld = false}) {
     _getSectors();
 
     solvedCube();
@@ -39,12 +40,12 @@ class CubeModel {
   ///   North = [4, 5, 6, 7]
   ///   East = [2, 6, 10, 14]
   ///   South = [11, 10, 9, 8]
-  ///   West = [12, 8, 4, 0]
+  ///   West = [13, 9, 5, 1]
   /// 
   void _getSectors() {
     List<List<int>> stickPos = List.generate(size, (i) => List.generate(size, (j) => i*size + j));
 
-    for(int i = 0; i < size/2; i++) {
+    for(int i = 0; i < (size + 1)/2; i++) {
       List<int> auxEast = [];
       List<int> auxWest = [];
       for(int j = 0; j < size; j++) {
@@ -147,26 +148,29 @@ class CubeModel {
   }
 
 
-  static const List<List<String>> _movesByGroup = [
-    ["F", "F'", "F2"],
-    ["B", "B'", "B2"],
-    ["R", "R'", "R2"],
-    ["L", "L'", "L2"],
-    ["D", "D'", "D2"],
-    ["U", "U'", "U2"],
-  ];
+  static const List<String> _possibleMoves = ["F", "B", "R", "L", "D", "U"];
+  static const List<String> _possibleComplement = ["", "'", "2"];
+  static const List<int> _moveLength = [9, 18, 40, 60, 70, 80];
+  static const List<int> _randomLength = [2, 6, 7, 8, 9, 10];
 
   String generateScramble() {
-    List<int> _groups = [Random().nextInt(6)];
+    List<int> _groups = [];
     String scramble = "";
-    int scrambleSize = 15 + Random().nextInt(6);
+    int scrambleSize = _moveLength[size - 2] + Random().nextInt(_randomLength[size - 2]);
     while (_groups.length < scrambleSize) {
       int newNumber = Random().nextInt(6);
-      if (newNumber != _groups[_groups.length - 1]) {
-        if (_groups.length < 2 ||
-            newNumber / 2 != _groups[_groups.length - 2]) {
+      int wide = 0;
+      if (_groups.isEmpty || newNumber != _groups[_groups.length - 1]) {
+        if (_groups.length < 2 || newNumber / 2 != _groups[_groups.length - 2]) {
           _groups.add(newNumber);
-          scramble += "${_movesByGroup[newNumber][Random().nextInt(3)]} ";
+
+          if(size > 3 ) {
+            wide = Random().nextInt((size/2).round());
+          }
+          if(bld && (_groups.length > scrambleSize - (Random().nextInt(2) + 1))) {
+            wide = size - 2;
+          }
+          scramble += (wide > 1 ? wide.toString() : "") + _possibleMoves[newNumber] + (wide > 0 ? "w" : "") + _possibleComplement[Random().nextInt(3)] + " ";
         }
       }
     }

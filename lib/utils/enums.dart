@@ -1,0 +1,1 @@
+enum CubeType {c2x2, c3x3, c4x4, c5x5, c6x6, c7x7, c3x3bld, c4x4bld, c5x5bld}

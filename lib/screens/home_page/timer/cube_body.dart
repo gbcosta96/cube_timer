@@ -4,16 +4,17 @@ import 'package:cube_timer/widgets/app_text.dart';
 import 'package:flutter/material.dart';
 
 class CubeBody extends StatefulWidget {
-  const CubeBody({Key? key}) : super(key: key);
+  final int cubeSize;
+  const CubeBody({Key? key, required this.cubeSize}) : super(key: key);
 
   @override
   State<CubeBody> createState() => CubeBodyState();
 }
 
 class CubeBodyState extends State<CubeBody> {
-  final double _svgSize = Dimensions.width(10);
+  final double _svgSize = Dimensions.smallest(12);
   String _scramble = " ";
-  final CubeModel _myCube = CubeModel(3);
+  CubeModel _myCube = CubeModel(3, bld: false);
 
   static const _defaultSVGColors = {
     CubeFaces.up: Colors.white,
@@ -26,21 +27,25 @@ class CubeBodyState extends State<CubeBody> {
 
   @override
   void initState() {
-    doScramble();
+    doScramble(widget.cubeSize);
     super.initState();
   }
 
-  void doScramble() {
+  void doScramble(cubeSize) {
     setState(() {
-      _myCube.solvedCube();
+      _myCube = CubeModel(cubeSize, bld: false);
       _scramble = _myCube.generateScramble();
       _myCube.scramble(_scramble);
     });
   }
 
+  String getScramble() {
+    return _scramble;
+  }
+
   Widget _tile(Color color) {
     return Container(
-      padding: EdgeInsets.all(_svgSize / 300),
+      padding: EdgeInsets.all(_svgSize / 600),
       width: _svgSize / _myCube.size,
       height: _svgSize / _myCube.size,
       child: Stack(
@@ -114,7 +119,7 @@ class CubeBodyState extends State<CubeBody> {
         SizedBox(
           height: Dimensions.height(2),
         ),
-        AppText(text: _scramble),
+        AppText(text: _scramble, size: 15,),
       ],
     );
   }
